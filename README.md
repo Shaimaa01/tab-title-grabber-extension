@@ -4,7 +4,7 @@ A simple but beautiful Chrome extension that grabs the title of the current brow
 
 ## Screenshot
 
-![](images/screenshot.png)
+![Extension Screenshot](images/screenshot.png)
 
 ## Tech Stack
 
