@@ -1,11 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Tab Title Grabber",
-  "version": "1.0",
-  "description": "A simple extension to grab the title of the current tab.",
+  "name": "LinkedIn Scraper",
+ "version": "2.0", 
+  "description": "Scrapes data from LinkedIn profiles.",
   "permissions": [
-    "tabs"
+    "tabs",
+    "scripting" 
   ],
+   "host_permissions": [
+    "https://www.linkedin.com/*" 
+  ],
+   "background": {
+    "service_worker": "service-worker.js" 
+  },
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {

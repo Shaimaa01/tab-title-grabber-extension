@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LinkedIn Scraper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+
+  <body>
+    <div class="popup-container">
+      <h1>LinkedIn Scraper</h1>
+
+      <div class="input-area">
+        <label for="profile-links"
+          >Paste LinkedIn Profile URLs (one per line):</label
+        >
+        <textarea
+          id="profile-links"
+          rows="5"
+          placeholder="https://www.linkedin.com/in/profile1
+https://www.linkedin.com/in/profile2"
+        ></textarea>
+      </div>
+
+      <button id="start-scraping-btn">Start Scraping</button>
+
+      <div id="status-message"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
