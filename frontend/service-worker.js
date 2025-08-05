@@ -1,11 +1,10 @@
-
-const API_ENDPOINT = 'http://localhost:3000/profiles';
+const API_ENDPOINT = "http://localhost:3000/profiles";
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "startScraping") {
     processAllUrls(message.urls);
   }
-  return true; 
+  return true;
 });
 
 async function processAllUrls(urls) {
@@ -27,34 +26,37 @@ function scrapeSingleUrl(url) {
     let scrapeTimeout;
 
     const onUpdatedListener = (tId, changeInfo, tab) => {
-      if (tId === tabId && changeInfo.status === 'complete' && tab.url.includes('linkedin.com')) {
+      if (
+        tId === tabId &&
+        changeInfo.status === "complete" &&
+        tab.url.includes("linkedin.com")
+      ) {
         chrome.scripting.executeScript({
           target: { tabId: tabId },
-          files: ['popup/scraper.js']
+          files: ["popup/scraper.js"],
         });
 
         scrapeTimeout = setTimeout(() => {
-          cleanupAndReject('Scraping timed out.');
+          cleanupAndReject("Scraping timed out.");
         }, 15000);
       }
     };
 
     const onMessageListener = (message, sender) => {
-      if (sender.tab?.id === tabId && message.action === 'scrapedData') {
+      if (sender.tab?.id === tabId && message.action === "scrapedData") {
         const finalData = message.data;
         finalData.url = url;
         cleanupAndResolve(finalData);
       }
     };
 
-    
     const cleanupAndResolve = (data) => {
       clearTimeout(scrapeTimeout);
       chrome.tabs.onUpdated.removeListener(onUpdatedListener);
       chrome.runtime.onMessage.removeListener(onMessageListener);
       resolve(data);
     };
-    
+
     const cleanupAndReject = (errorMessage) => {
       clearTimeout(scrapeTimeout);
       chrome.tabs.onUpdated.removeListener(onUpdatedListener);
@@ -76,18 +78,36 @@ function scrapeSingleUrl(url) {
 async function sendDataToBackend(data) {
   try {
     const response = await fetch(API_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error(`Server responded with status: ${response.status}`);
+    if (!response.ok)
+      throw new Error(`Server responded with status: ${response.status}`);
     const result = await response.json();
-    console.log('Successfully sent data to backend:', result);
+    console.log("Successfully sent data to backend:", result);
   } catch (error) {
-    console.error('Error sending data:', error);
+    console.error("Error sending data:", error);
     throw error;
   }
 }
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "startAction") {
+    console.log(
+      "Service Worker: Received startAction message with counts:",
+      message
+    );
+    startFeedInteraction(message.likeCount, message.commentCount);
+  }
+  return true;
+});
 
-
+async function startFeedInteraction(likeCount, commentCount) {
+  console.log("Service Worker: Opening LinkedIn feed...");
+  await chrome.tabs.create({
+    url: "https://www.linkedin.com/feed/",
+    active: true,
+  });
+  console.log("Service Worker: LinkedIn feed tab created.");
+}

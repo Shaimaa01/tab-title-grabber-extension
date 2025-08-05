@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const linksTextarea = document.getElementById("profile-links");
   const statusDiv = document.getElementById("status-message");
 
+  const startActionBtn = document.getElementById("start-action-btn");
+  const likeCountInput = document.getElementById("like-count");
+  const commentCountInput = document.getElementById("comment-count");
+
   startBtn.addEventListener("click", () => {
     const validUrls = linksTextarea.value.split("\n").filter((url) => {
       return url.trim().startsWith("https://www.linkedin.com/in/");
@@ -24,10 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     statusDiv.style.color = "green";
   });
 
-  const startActionBtn = document.getElementById("start-action-btn");
-  const likeCountInput = document.getElementById("like-count");
-  const commentCountInput = document.getElementById("comment-count");
-
   function validateInteractorInputs() {
     const likes = parseInt(likeCountInput.value, 10);
     const comments = parseInt(commentCountInput.value, 10);
@@ -42,7 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
   likeCountInput.addEventListener("input", validateInteractorInputs);
   commentCountInput.addEventListener("input", validateInteractorInputs);
 
-  interactorForm.addEventListener("submit", (event) => {
+  startActionBtn.addEventListener("click", () => {
+    const likeCount = parseInt(likeCountInput.value, 10) || 0;
+    const commentCount = parseInt(commentCountInput.value, 10) || 0;
+
     chrome.runtime.sendMessage({
       action: "startAction",
       likeCount: likeCount,
