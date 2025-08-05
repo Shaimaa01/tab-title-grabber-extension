@@ -6,25 +6,42 @@
   </head>
 
   <body>
-    <div class="popup-container">
+    <main class="popup-container">
       <h1>LinkedIn Scraper</h1>
-
-      <div class="input-area">
+      <form class="input-area">
         <label for="profile-links"
           >Paste LinkedIn Profile URLs (one per line):</label
         >
         <textarea
           id="profile-links"
-          rows="5"
+          rows="4"
           placeholder="https://www.linkedin.com/in/profile1
 https://www.linkedin.com/in/profile2"
         ></textarea>
-      </div>
+        <p id="status-message"></p>
+      </form>
+      <button type="submit" id="start-scraping-btn">Start Scraping</button>
 
-      <button id="start-scraping-btn">Start Scraping</button>
+      <hr class="separator" />
 
-      <div id="status-message"></div>
-    </div>
+      <h2>Feed Interactor</h2>
+      <form class="input-grid">
+        <div class="input-area">
+          <label for="like-count">Like Count:</label>
+          <input type="number" id="like-count" min="0" placeholder="e.g., 5" />
+        </div>
+        <div class="input-area">
+          <label for="comment-count">Comment Count:</label>
+          <input
+            type="number"
+            id="comment-count"
+            min="0"
+            placeholder="e.g., 3"
+          />
+        </div>
+      </form>
+      <button id="start-action-btn" disabled>Start Liking & Commenting</button>
+    </main>
 
     <script src="popup.js"></script>
   </body>
