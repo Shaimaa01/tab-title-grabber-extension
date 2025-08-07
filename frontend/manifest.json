@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "LinkedIn Scraper",
+  "name": "LinkedIn Scraper & Automator",
   "version": "3.0",
-  "description": "Scrapes data from LinkedIn profiles.",
-  "permissions": ["tabs", "scripting", "activeTab", "storage"],
+  "description": "Scrapes data from LinkedIn profiles and automatically like or comment on feed posts",
+  "permissions": ["tabs", "scripting", "activeTab"],
   "host_permissions": ["https://www.linkedin.com/*"],
   "background": {
     "service_worker": "service-worker.js"
